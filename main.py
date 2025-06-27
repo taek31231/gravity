@@ -6,24 +6,6 @@ st.set_page_config(layout="wide") # 넓은 레이아웃 사용
 
 st.title("외계행성 중력렌즈 시뮬레이터")
 
-# --- Matplotlib 한글 폰트 설정 (이전 답변에서 설명된 부분) ---
-# Streamlit Cloud 환경에서 가장 안정적인 방법: `streamlit-matplotlib-font` 사용
-try:
-    import streamlit_matplotlib_font as smf
-    smf.auto_setup_font()
-except ImportError:
-    st.warning("`streamlit-matplotlib-font` 라이브러리가 설치되어 있지 않습니다. 그래프에 한글이 깨질 수 있습니다.")
-    # 수동 폰트 설정 시도 (클라우드 환경에 폰트가 설치되어 있다고 가정)
-    from matplotlib import font_manager, rc
-    try:
-        font_path = "/usr/share/fonts/truetype/nanum/NanumGothic.ttf"
-        font_name = font_manager.FontProperties(fname=font_path).get_name()
-        rc('font', family=font_name)
-        plt.rcParams['axes.unicode_minus'] = False
-    except Exception:
-        st.warning("한글 폰트 수동 설정에도 실패했습니다. 시스템 또는 배포 환경에 한글 폰트가 있는지 확인해주세요.")
-# --- 한글 폰트 설정 끝 ---
-
 st.sidebar.header("외계 행성 위치 조절")
 
 # 행성의 렌즈별로부터의 상대적 각도 (0 ~ 360도)
