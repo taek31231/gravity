@@ -26,9 +26,6 @@ lens_mass_ratio = st.sidebar.slider("행성-렌즈별 질량비 (q)", 0.0001, 0.
 source_offset_x = st.sidebar.slider("배경별 렌즈 중심 오프셋 X", -0.5, 0.5, 0.0, step=0.01, help="배경별이 렌즈 중심에서 벗어난 정도")
 source_offset_y = st.sidebar.slider("배경별 렌즈 중심 오프셋 Y", -0.5, 0.5, 0.0, step=0.01, help="배경별이 렌즈 중심에서 벗어난 정도")
 
-# --- 메인 영역: 시뮬레이션 시각화 ---
-col1, col2 = st.columns(2) # 화면을 두 부분으로 나눔
-
 # --- 마이크로렌즈링 광도 계산 함수 ---
 # 행성 위치(planet_pos_x, planet_pos_y)를 인자로 받아 밝기를 계산합니다.
 def calculate_magnification(q_ratio, planet_pos_x, planet_pos_y, source_x, source_y):
@@ -49,8 +46,8 @@ def calculate_magnification(q_ratio, planet_pos_x, planet_pos_y, source_x, sourc
 
     # 현재 행성 위치의 각도 (0~360도)
     delta_angle = np.degrees(np.arctan2(p_y, p_x)) % 360 
-    target_angle_deg = 270 # 배경별이 Y축 음수 방향에 있을 때 (시선 방향)
-    angle_spread_deg = 30 # 효과가 나타나는 각도 범위
+    target_angle_deg = 270 
+    angle_spread_deg = 30 
     
     # 목표 각도(270도)와 현재 행성 각도의 차이
     angle_dist = np.abs(delta_angle - target_angle_deg)
@@ -66,11 +63,13 @@ def calculate_magnification(q_ratio, planet_pos_x, planet_pos_y, source_x, sourc
     planet_influence = q_ratio * angle_influence * distance_influence
     
     # 최종 밝기 (렌즈별 기본 밝기 + 행성 효과)
-    final_magnification = base_mag + planet_influence * 5 
+    # 현실적인 효과를 위해 스케일링 팩터를 1.0으로 조정했습니다.
+    final_magnification = base_mag + planet_influence * 1.0 
     
     return max(1.0, final_magnification)
 
-# -------------------------------------------------------------
+# --- 메인 영역: 시뮬레이션 시각화 ---
+col1, col2 = st.columns(2) # 화면을 두 부분으로 나눔
 
 with col1:
     st.subheader("중력렌즈 시스템 시각화")
